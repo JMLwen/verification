@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>校验</title>
+	<script src="verification.js"></script>
+</head>
+<style type="text/css">
+	*{
+		margin:0;
+		padding:0;
+	}
+	li{
+		list-style-type:none;
+	}
+	ul{
+		margin:40px 0 0 40px;
+	}
+	li{
+		height: 60px;
+		position: relative;
+	}
+	label{
+		width: 80px;
+		display: inline-block;
+		height: 30px;
+		line-height: 30px;
+	}
+	input{
+		box-sizing: border-box;
+		height: 30px;
+		border:1px solid #000;
+		border-radius:3px;
+		width: 200px;
+		padding: 0 8px;
+	}
+	.verification-tips{
+		position: absolute;
+		color: #f00;
+		left:300px;
+		top: 8px;
+	}
+</style>
+<body>
+	<ul>
+		<li>
+			<label for="loginName">用户名</label>
+			<input type="text" name="loginName" id="loginName" >
+		</li>
+		<li>
+			<label for="password">密码</label>
+			<input type="password" name="password" id="password">
+		</li>
+		<li>
+			<label for="password-again">重复密码</label>
+			<input type="password" name="password-again" id="password-again">
+		</li>
+	</ul>
+</body>
+<script>
+	new Verification().bindEvent(
+	[
+		{
+			name:'#loginName',
+			type: 'text',
+			require: false,
+			valLength:[2,15],
+			RegExp:[/^[A-Za-z0-9]+$/],
+			tips:['账号必须是数字或字母组成的字符'],
+		},
+		{
+			name:'#password',
+			type: 'password',
+			require: false,
+			valLength:[6,18],
+			RegExp:[/^[A-Za-z0-9]+$/],
+			tips:['密码必须是字母和数字组成的字符',],
+		},
+		{
+			name:'#password-again',
+			type: 'password',
+			require: false,
+			valLength:[6,18],
+			RegExp:[/^[A-Za-z0-9]+$/],
+			tips:['重复密码必须是字母和数字组成的字符',],
+			formatter:function(inputResult,showTipsBox){
+				var padAgain = document.querySelector("#password-again"),
+					padAgainVal = padAgain.value,
+					psdVal = document.querySelector("#password").value;
+				if(psdVal !== padAgainVal){
+					showTipsBox(padAgain,'密码必须与重复密码一致');
+					inputResult = false
+				}
+				return inputResult;
+			}
+		}
+	]
+	);
+	
+</script>
+</html>
